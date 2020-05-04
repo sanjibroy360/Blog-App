@@ -1,0 +1,23 @@
+<%-include('partials/header')-%>
+<body>
+
+    <main>
+        <a href="/">Home</a>
+        <div>
+
+            <form action="/users/<%=username%>/article/new" method="POST">
+                
+                <input type="text" placeholder="Title" name = "name" required>
+                <input type="text" name = "content" required> 
+                <input type="text" placeholder="Tags" name = "tags"> 
+                <input type="hidden" name = "author_name" value="<%=username%>">
+
+                <input type="submit" value="Post" class="submit">
+        
+            </form>
+
+        </div>
+
+    </main>
+
+<%-include('partials/footer')-%>

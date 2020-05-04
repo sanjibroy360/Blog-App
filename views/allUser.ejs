@@ -1,0 +1,17 @@
+<%-include('partials/header')-%>
+<body>
+    <h4><a href="/"> Home </a></h4>
+    <ul>
+        <% user.forEach(user => { %>
+
+            <li>
+                <a href= "<%=user.username%>/profile">
+                    <%= user.username %>
+                </a>
+            </li>
+
+        <% }) %>
+    </ul>
+   
+
+<%-include('partials/footer')-%>

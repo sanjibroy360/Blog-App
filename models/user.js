@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema();
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+
+
+var userSchema = new Schema({
     name: {
         type: String,
         require: true,
@@ -9,7 +11,7 @@ const userSchema = new Schema({
 
     username: {
         type: String,
-        // unique: true,
+        
         require: true,
     },
 
@@ -20,7 +22,7 @@ const userSchema = new Schema({
 
     email : {
         type: String,
-        // unique:true,
+        
         require : true,
         match : /@/
     },
@@ -28,7 +30,7 @@ const userSchema = new Schema({
         type : String,
         minlength: 8
     }
-},{timestamps : true})
+},{timestamps : true});
 
 const User = mongoose.model("User",userSchema);
 module.exports = User;

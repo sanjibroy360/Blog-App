@@ -6,7 +6,7 @@ const articleSchema = new Schema({
     title: String,
     content : String,
     tags : [String],
-
+    author_name: String,
     author: {
         type : Schema.Types.ObjectId,
         refs: 'User'
