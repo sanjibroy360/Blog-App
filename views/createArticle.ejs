@@ -1,23 +1,23 @@
 <%-include('partials/header')-%>
-<body>
 
-    <main>
-        <a href="/">Home</a>
-        <div>
+<%-include('partials/navbar')-%>
 
-            <form action="/users/<%=username%>/article/new" method="POST">
-                
-                <input type="text" placeholder="Title" name = "name" required>
-                <input type="text" name = "content" required> 
-                <input type="text" placeholder="Tags" name = "tags"> 
-                <input type="hidden" name = "author_name" value="<%=username%>">
+<div class="container">
 
-                <input type="submit" value="Post" class="submit">
+    <form action="/articles" method="POST" class="form">
+
+        <input type="text" placeholder="Title" name="title" class="title">
+        <textarea name="description" placeholder="Tell your story..." rows="1000" required class="desc"></textarea>
         
-            </form>
-
+        <div class="flex">
+            <input type="text" placeholder="Author:" name="author" class="author">
+            <input type="text" placeholder="Tags:" name="tags" class="tags">
         </div>
 
-    </main>
+        <input type="submit" value="Post" class="btn post_btn">
+        
+    </form>
+    
+</div>
 
 <%-include('partials/footer')-%>

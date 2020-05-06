@@ -1,0 +1,26 @@
+<%-include('partials/header')-%>
+
+
+<%-include('partials/navbar')-%>
+
+<div class="container">
+    
+    <form action="/articles/<%= article._id%>/edit" method="POST" class="form">
+
+        <input type="text" placeholder="Title" name="title" value="<%= article.title %>" class="title">
+        <textarea name="description" placeholder="Description" rows="10" class="desc" required><%= article.description%></textarea>
+        
+        <div class="flex">
+
+            <input type="text" placeholder="Author" name="author" class="author" value="<%= article.author %>">
+            
+            <input type="text" placeholder="Tags" name="tags" class="tags" value="<%= article.tags %>">
+        </div>
+
+        <input type="submit" value="Post" class="btn post_btn">
+        
+    </form>
+    
+</div>
+
+<%-include('partials/footer')%>

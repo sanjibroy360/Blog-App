@@ -3,21 +3,33 @@ const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
     
-    title: String,
-    content : String,
-    tags : [String],
-    author_name: String,
-    author: {
-        type : Schema.Types.ObjectId,
-        refs: 'User'
+    title : {
+        maxlength: 40,
+        type: String,
+        require: true
     },
-    
-    like: {
+
+    description: String,
+
+    author: {
+        require: true,
+        type: String
+    },
+
+    likes : {
+        default: 0,
         type: Number,
-        default: 0
-    }
+        min: 0
+    },
 
-},{timestamps : true});
+    comments : [{
+        type: Schema.Types.ObjectId,
+        ref : "Comment"
+    }],
+    
+    tags : [String],
 
-const Article = mongoose.model('Article', articleSchema);
+}, {timestamps : true});
+
+const Article = mongoose.model("Article", articleSchema);
 module.exports = Article;

@@ -1,62 +1,65 @@
-// Require
-const express = require('express');
-const mongoose = require('mongoose');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var mongoose = require('mongoose');
 
-const PORT = process.env.PORT || 3000;
+var Article = require('./models/article');
 
-// require routers
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var articleRouter = require('./routes/articles');
 
-const userRouter = require('./routers/users');
+var app = express();
 
+// Database Connect
 
-// Connect to database
-
-mongoose.connect("mongodb://localhost:27017/medium-crud",
-{ useUnifiedTopology : true, useNewUrlParser : true}, (err) => {
-    
-    console.log("Connected: ", err ? err : true);
+mongoose.connect("mongodb://localhost:27017/blog",
+{useUnifiedTopology : true, useNewUrlParser : true},(err) => {
+  console.log("Connected: ", err ? err : true);
 });
 
-
-// instansiate
-
-const app = express();
-
-// middlewares
-
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static(__dirname + '/public'));
-
-// routing middlewares
-
-app.use('/users', userRouter);
-
-
-// Setup app.use('/article')view
-
+// view engine setup
 app.set('view engine', 'ejs');
-app.set('views',__dirname + '/views');
-
-// routers
-
-app.get('/', (req, res) => {
-    res.render("index");
-})
-
-// 404
-
-app.use((err, req, res, next) => {
-    console.log(err);
-    res.render("errorMsg",{msg : `${err.msg || err.Message}`});
-})
-
-// server or client side error
+app.set('views', path.join(__dirname, 'views'));
 
 
-// listener
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, ()=> console.log(`Server is running on ${PORT}`))
 
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/articles',articleRouter);
 
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
+// router
+
+app.get('/', (req, res, next) => {
+  console.log("hello");
+  Article.find({}, (err, articles) => {
+      if(err) return next(err);
+      res.render("index", {articles});
+  })
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;

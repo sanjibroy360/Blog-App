@@ -1,0 +1,84 @@
+<%-include('partials/header')-%>
+
+<%-include('partials/navbar')-%>
+
+<article>
+    <div class="blog_container">
+        <h1 class="heading"> <%=article.title%> </h1>
+    
+        <div class="content_flex">
+            <p class="author_name">Author: <%= article.author %></p>
+            <div>
+                <a href="/articles/<%= article._id %>/edit" class="edit">Edit</a>
+                <a href="/articles/<%= article._id %>/delete" class="delete">Delete</a>
+            </div>
+        </div>
+
+        
+        <p class="date"><%= article.createdAt %></p>
+
+        <p class="para"><%=article.description%></p>
+
+        <% article.tags.forEach(tag => { %>
+            <span class="show_tag"> <%= tag %> </span>
+        <% })%>
+    </div>
+</article>
+        
+
+        
+<section class="comment_section"> 
+
+    <div class="blog_container">
+        
+        <ul>
+            <% comments.forEach(comment => { %>
+                
+                <li class="comment_card">
+
+                    <div class="user_icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+
+                    <div class="user_comment">
+                        
+                        <p class="comment_author"><%= comment.author %></p>
+                        <p class="feedback"><%= comment.content %></p>
+                        <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/edit" class="comment_edit">Edit</a>
+                        <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/delete" class="comment_delete">Delete</a>
+                        
+                    </div>
+                </li>
+
+            <% }) %>
+
+        </ul>
+
+        <form action="/articles/<%= article._id%>/comments" method="POST" class="comment_form">
+
+            <textarea name="content"rows="6" placeholder="Write a response..." class="comment" maxlength="480"></textarea>
+
+            <div class="form_flex">
+                
+                <input type="text" name="author" placeholder="Author" class="reader">
+                <input type="submit" value="Comment" class="comment_submit">
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<aside>
+    <div class="side">
+        <a href="/articles/<%= article._id%>/like"> <i class="fas fa-sort-up"></i> </a>
+        <span class="likes"><%=article.likes%></span>
+        <a href="/articles/<%= article._id%>/unlike"><i class="fas fa-caret-down"></i></a>
+    </div>
+</aside>
+
+<%-include('partials/comment')-%>
+
+<%-include('partials/footer')-%>
