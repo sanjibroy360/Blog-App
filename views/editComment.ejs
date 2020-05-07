@@ -30,7 +30,8 @@
 
         <ul>
             <% allComments.forEach(comment => { %>
-                
+                <% if(comment.id != targetComment.id) {%>
+               
                 <li class="comment_card">
                     <div class="user_icon">
                         <i class="fas fa-user-circle"></i>
@@ -44,19 +45,19 @@
                         <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/delete" class="comment_delete">Delete</a>
                     </div>
                 </li>
-
-            <% }) %>
+                
+            <% }}) %>
 
         </ul>
 
-        <form action = "/articles/<%= article._id%>/comments/<%=comment._id%>/edit" method="POST" class="comment_form">
+        <form action = "/articles/<%= article._id%>/comments/<%=targetComment._id%>/edit" method="POST" class="comment_form">
             <textarea name="content"rows="6" placeholder="Write a response..." class="comment" maxlength="480">
-                <%= comment.content %>
+                <%= targetComment.content %>
             </textarea>
 
             <div class="form_flex">
                 
-                <input type="text" name="author" placeholder="Author" value="<%= comment.author %>" class="reader">
+                <input type="text" name="author" placeholder="Author" value="<%= targetComment.author %>" class="reader">
                 <input type="submit" value="Comment" class="comment_submit">
 
             </div>
@@ -69,15 +70,7 @@
 </section>
         
         
-<aside>
-    <div class="side">
 
-        <a href="/articles/<%= article._id%>/like"> <i class="fas fa-sort-up"></i> </a>
-        <span class="likes"><%=article.likes%></span>
-        <a href="/articles/<%= article._id%>/unlike"><i class="fas fa-caret-down"></i></a>
-
-    </div>
-</aside>
 
 
 

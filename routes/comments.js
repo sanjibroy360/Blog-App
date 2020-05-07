@@ -14,14 +14,16 @@ router.get('/:articleId/comments/:commentId/edit', (req, res, next) => {
 
         if (err) return next(err);
 
-        Comment.find({}, (err, allComments) => {
+        Comment.find({articleId : articleId}, (err, allComments) => {
 
             if (err) return next(err);
 
-            Comment.findById(commentId, (err, comment) => {
+            Comment.findById(commentId, (err, targetComment) => {
+
                 if (err) return next(err);
-                console.log(comment);
-                res.render("editComment", { article, allComments, comment })
+                targetComment.content = targetComment.content.trim();
+                res.render("editComment", { article, allComments, targetComment });
+
             })
 
         })
@@ -38,18 +40,15 @@ router.post("/:articleId/comments/:commentId/edit", (req, res, next) => {
     Comment.findByIdAndUpdate(commentId, req.body, (err, updatedComment) => {
         if (err) return next(err);
 
-        Article.findById(articleId, (err, article) => {
-            if (err) return next(err);
-            article.createdAt = String(article.createdAt);
-
-            // Display Comments
-
-            Comment.find({ articleId }, (err, comments) => {
-                if (err) return next(err);
-                res.render("showContent", { article, comments });
-            })
+        Article
+        .findById(articleId)
+        .populate("comments", "content author")
+        .exec((err, article) => {
+            res.render("showContent", { article });
         })
     })
+
+    
 })
 
 

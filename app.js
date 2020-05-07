@@ -43,13 +43,13 @@ app.use(function(req, res, next) {
 
 // router
 
-app.get('/', (req, res, next) => {
-  console.log("hello");
-  Article.find({}, (err, articles) => {
-      if(err) return next(err);
-      res.render("index", {articles});
-  })
-});
+// app.get('/', (req, res, next) => {
+//   console.log("hello");
+//   Article.find({}, (err, articles) => {
+//       if(err) return next(err);
+//       res.render("index", {articles});
+//   })
+// });
 
 // error handler
 app.use(function(err, req, res, next) {

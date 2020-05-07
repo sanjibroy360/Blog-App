@@ -46,9 +46,11 @@ router.get('/:id', (req, res, next) => {
 
         // Display Comments
 
-        Comment.find({articleId}, (err, comments) => {
-            if(err) return next(err);
-            res.render("showContent", {article, comments});
+        Article
+        .findById(articleId)
+        .populate("comments", "content author")
+        .exec((err, article) => {
+            res.render("showContent", { article });
         })
     })
 })
@@ -127,13 +129,16 @@ router.post('/:articleId/comments', (req, res, next) => {
     let id = req.params.articleId;
     let articleId = id;
     req.body.articleId = id;
+    req.body.content = req.body.content.trim();
+    
     Comment.create(req.body, (err, comment) => {
         if(err) return next(err);
 
         Article.findByIdAndUpdate(articleId,
-        {$push : {comments: articleId}} 
+        {$push : {comments: comment.id}} 
         ,(err, article) => {
             if(err) return next(err);
+            console.log("article updated", article);
             res.redirect(`/articles/${id}`);
         })
     })
