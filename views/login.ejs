@@ -32,19 +32,17 @@
                     Sign in to get personalized story recommendations, follow authors and topics you love, and interact with stories.
                 </p>
     
-                <form action="" class="user_reg_form" method="POST">
-                    <label class="reg_label"> Your full name </label>
-                    <input type="text" name="name" class="reg_input">
+                <form action="/users/login" class="user_reg_form" method="POST">
     
                     <label class="reg_label">Your email</label>
                     <input type="email" name="email" class="reg_input">
 
                     <label class="reg_label">Your password</label>
-                    <input type="password" name="email" class="reg_input">
+                    <input type="password" name="password" class="reg_input">
 
                     <input type="submit" value="Create account" class="reg_submit">
                 </form>
-                <p class="reg_signin_msg"> No account? <a href="#"><span class="green_link">Create one</span></a></p>
+                <p class="reg_signin_msg"> No account? <a href="/users/register"><span class="green_link">Create one</span></a></p>
                 
             </div>
             
