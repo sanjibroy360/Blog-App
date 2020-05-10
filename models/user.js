@@ -18,6 +18,8 @@ const userSchema = new Schema( {
         type: String,
         minlength: 8
     }
+
+    
 },{timestamps : true} );
 
 userSchema.pre("save", function(next) {

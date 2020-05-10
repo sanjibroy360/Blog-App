@@ -7,11 +7,14 @@
         <h1 class="heading"> <%=article.title%> </h1>
 
         <div class="content_flex">
-            <p class="author_name">Author: <%= article.author %></p>
+            <p class="author_name">Author: <%= article.author.name %></p>
+
+            <% if(article.author.id == currentUser)  { %>
             <div>
                 <a href="/articles/<%= article._id %>/edit" class="edit">Edit</a>
                 <a href="/articles/<%= article._id %>/delete" class="delete">Delete</a>
             </div>
+            <% } %>
         </div>
 
 
@@ -32,7 +35,7 @@
     <div class="blog_container">
 
         <ul>
-            <% article.comments.forEach(comment => { %>
+            <% comments.forEach(comment => { %>
 
             <li class="comment_card">
 
@@ -42,11 +45,14 @@
 
                 <div class="user_comment">
 
-                    <p class="comment_author"><%= comment.author %></p>
+                    <p class="comment_author"><%= comment.author.name %></p>
                     <p class="feedback"><%= comment.content %></p>
-                    <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/edit" class="comment_edit">Edit</a>
-                    <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/delete"
+
+                    <% if(comment.author.id == currentUser) { %>
+                        <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/edit" class="comment_edit">Edit</a>
+                        <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/delete"
                         class="comment_delete">Delete</a>
+                    <% } %>
 
                 </div>
             </li>
@@ -57,15 +63,14 @@
 
         <form action="/articles/<%= article._id%>/comments" method="POST" class="comment_form">
 
-            <textarea name="content" rows="6" placeholder="Write a response..." class="comment"
+            <textarea name="content" rows="6" placeholder="Write a response..."  class="comment"
                 maxlength="480"></textarea>
 
-            <div class="form_flex">
+            
 
-                <input type="text" name="author" placeholder="Author" class="reader">
                 <input type="submit" value="Comment" class="comment_submit">
 
-            </div>
+        
 
         </form>
 

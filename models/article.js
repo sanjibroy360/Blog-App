@@ -12,8 +12,9 @@ const articleSchema = new Schema({
     description: String,
 
     author: {
-        require: true,
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
 
     likes : {

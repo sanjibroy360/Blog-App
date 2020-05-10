@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
+var session = require('express-session');
+var Mongostore = require('connect-mongo')(session);
+
 var Article = require('./models/article');
 
 var indexRouter = require('./routes/index');
@@ -31,7 +34,50 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+    secret:"keyboad cat",
+    resave: true,
+    saveUninitialized: false,
+    store: new Mongostore({mongooseConnection: mongoose.connection})
+  })
+);
 
+app.use('/articles',(req, res, next) => {
+
+  if(req.session && req.session.userId) {
+    
+    let userId = req.session.userId;
+    next();
+
+  } else {
+      
+      console.log(req.headers);
+      req.session.destroy();
+      res.clearCookie('connect.sid');
+      res.redirect("/users/login");
+      
+  }
+  
+})
+
+
+// app.use((req, res, next) => {
+//   console.log(req.headers);
+//   console.log(req.session);
+//   var num = req.cookies.count;
+  
+//   if(req.cookies.count) {
+    
+//     res.cookie("count", +num + 1);
+
+//   } else {
+
+//     res.cookie("count", 1);
+
+//   }
+
+//   next();
+// })
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/articles',articleRouter);

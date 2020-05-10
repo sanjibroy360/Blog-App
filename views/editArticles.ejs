@@ -7,12 +7,10 @@
     
     <form action="/articles/<%= article._id%>/edit" method="POST" class="form">
 
-        <input type="text" placeholder="Title" name="title" value="<%= article.title %>" class="title">
+        <input type="text" placeholder="Title" name="title" value="<%= article.title %>" class="title" required>
         <textarea name="description" placeholder="Description" rows="10" class="desc" required><%= article.description%></textarea>
         
         <div class="flex">
-
-            <input type="text" placeholder="Author" name="author" class="author" value="<%= article.author %>">
             
             <input type="text" placeholder="Tags" name="tags" class="tags" value="<%= article.tags %>">
         </div>

@@ -4,12 +4,10 @@
 <%-include('partials/navbar')-%>
 
 <div class="container">
-    
-    <a href="/users/<%=currentUser%>/myarticles"> <button class="btn"> My Articles</button> </a>
-    
+
     <ul>
         <% articles.forEach(article => { %>
-        <a href="/articles/<%=article._id%>">
+        <a href="/articles/<%=article.id%>">
 
             <li class="card"> 
                 <span class="article_title"> <%= article.title %> </span> 

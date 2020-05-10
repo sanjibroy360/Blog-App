@@ -10,24 +10,52 @@ router.get('/:articleId/comments/:commentId/edit', (req, res, next) => {
     let commentId = req.params.commentId;
     let articleId = req.params.articleId;
 
-    Article.findById(articleId, (err, article) => {
+    // Article.findById(articleId, (err, article) => {
 
-        if (err) return next(err);
+    //     if (err) return next(err);
 
-        Comment.find({articleId : articleId}, (err, allComments) => {
+    //     Comment.find({articleId : articleId}, (err, allComments) => {
 
-            if (err) return next(err);
+    //         if (err) return next(err);
+
+    //         Comment.findById(commentId, (err, targetComment) => {
+
+    //             if (err) return next(err);
+    //             targetComment.content = targetComment.content.trim();
+    //             res.render("editComment", { article, allComments, targetComment });
+
+    //         })
+
+    //     })
+
+    // })
+
+    Article
+    .findById(articleId)
+    .populate("author", "name") 
+    .exec((err, article) => {
+        if(err) return next(err);
+
+        Comment
+        .find({articleId})
+        .populate("author", "name")
+        .exec((err, comments) => {
+
+            if(err) return next(err);
 
             Comment.findById(commentId, (err, targetComment) => {
 
                 if (err) return next(err);
-                targetComment.content = targetComment.content.trim();
-                res.render("editComment", { article, allComments, targetComment });
+                
 
+                let currentUser = req.session.userId;
+                res.render("editComment", { article, comments, targetComment, currentUser });
+            
             })
+            
+            
 
         })
-
     })
 
 })
@@ -36,19 +64,34 @@ router.post("/:articleId/comments/:commentId/edit", (req, res, next) => {
 
     let commentId = req.params.commentId;
     let articleId = req.params.articleId;
+    let targetComment = commentId;
+    Article
+    .findById(articleId)
+    .populate("author", "name") 
+    .exec((err, article) => {
+        if(err) return next(err);
 
-    Comment.findByIdAndUpdate(commentId, req.body, (err, updatedComment) => {
-        if (err) return next(err);
+        Comment
+        .find({articleId})
+        .populate("author", "name")
+        .exec((err, comments) => {
 
-        Article
-        .findById(articleId)
-        .populate("comments", "content author")
-        .exec((err, article) => {
-            res.render("showContent", { article });
+            if(err) return next(err);
+
+            Comment.findByIdAndUpdate(commentId, req.body, (err, updatedComment) => {
+
+                if (err) return next(err);
+                
+
+                let currentUser = req.session.userId;
+                res.render("showContent", { article, comments, targetComment, currentUser });
+            
+            })
+            
         })
+
     })
 
-    
 })
 
 
@@ -60,6 +103,7 @@ router.get('/:articleId/comments/:commentId/delete', (req, res, next) => {
     let commentId = req.params.commentId;
 
     Comment.findByIdAndDelete(commentId, (err, data) => {
+        
         if (err) return next(err);
 
         Article.findOneAndUpdate({ _id: articleId }, { $pull: { comments: commentId } }, (err, updatedArticle) => {

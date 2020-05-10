@@ -58,6 +58,10 @@ body {
   line-height: 1.5;
 }
 
+button {
+  cursor: pointer;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;

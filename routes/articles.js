@@ -7,28 +7,37 @@ const Article = require('../models/article');
 
 // Show all articles
 
+
+
 router.get('/', (req, res, next) => {
-    console.log("hello");
+    
     Article.find({}, (err, articles) => {
-        if(err) return next(err);
-        res.render("articleHome", {articles});
+        if(err) return next(err); 
+        let currentUser = req.session.userId;
+        res.render("articleHome", {articles, currentUser});  
     })
+
+    
 });
 
 // Create Articles
 
 router.get('/new', (req, res, next) => {
     res.render("createArticle");
+    console.log("Author", req.session.userId);
 });
 
 router.post('/', (req, res, next) => {
     req.body.tags = req.body.tags.split(',').map(tag => tag.trim());
-    console.log(req.body);
-   
+
+    
+    req.body.author = req.session.userId;
     Article.create(req.body, (err, data) => {
         if(err) return next(err);
         res.render("success",{msg : "Article Created Successfully"})
     })  
+
+    
 
 })
 
@@ -37,22 +46,41 @@ router.post('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
     
-    let id = req.params.id;
-    let articleId = id;
     
-    Article.findById(id, (err, article) => {
+    let articleId = req.params.id;
+    
+    // Article.findById(id, (err, article) => {
+    //     if(err) return next(err);
+    //     article.createdAt = String(article.createdAt);
+
+    Article
+    .findById(articleId)
+    .populate("author", "name") 
+    .exec((err, article) => {
         if(err) return next(err);
-        article.createdAt = String(article.createdAt);
 
-        // Display Comments
+        Comment
+        .find({articleId})
+        .populate("author", "name")
+        .exec((err, comments) => {
 
-        Article
-        .findById(articleId)
-        .populate("comments", "content author")
-        .exec((err, article) => {
-            res.render("showContent", { article });
+            console.log(comments);
+            currentUser = req.session.userId;
+            res.render("showContent", { article, comments, currentUser });
+
         })
     })
+        // Display Comments
+
+    //     Article
+    //     .findById(articleId)
+    //     .populate("comments", "content author")
+    //     .exec((err, article) => {
+
+    //         console.log(article);
+            
+    //     })
+    // })
 })
   
 // Update Article
@@ -82,7 +110,7 @@ router.get('/:id/delete', (req, res, next) => {
     Article.findByIdAndDelete(id, (err, data) => {
         if(err) return next(err);
 
-        Comment.deleteMany({articleId : id}, (err, data) => {
+        Comment.deleteMany({articleId : id}, (err) => {
             if(err) return next(err);
         })
         res.render("success", {msg: "User Deleted Successfully!"});
@@ -130,6 +158,7 @@ router.post('/:articleId/comments', (req, res, next) => {
     let articleId = id;
     req.body.articleId = id;
     req.body.content = req.body.content.trim();
+    req.body.author = req.session.userId;
     
     Comment.create(req.body, (err, comment) => {
         if(err) return next(err);

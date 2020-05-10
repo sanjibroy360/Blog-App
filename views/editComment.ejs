@@ -7,11 +7,15 @@
         <h1 class="heading"> <%=article.title%> </h1>
     
         <div class="content_flex">
-            <p class="author_name">Author: <%= article.author %></p>
-            <div>
-                <a href="/articles/<%= article._id %>/edit" class="edit">Edit</a>
-                <a href="/articles/<%= article._id %>/delete" class="delete">Delete</a>
-            </div>
+            <p class="author_name">Author: <%= article.author.name %></p>
+            
+            <% if(article.author.id == currentUser)  { %>
+                <div>
+                    <a href="/articles/<%= article._id %>/edit" class="edit">Edit</a>
+                    <a href="/articles/<%= article._id %>/delete" class="delete">Delete</a>
+                </div>
+            <% } %>
+
         </div>
 
         
@@ -29,7 +33,7 @@
     <div class="blog_container">
 
         <ul>
-            <% allComments.forEach(comment => { %>
+            <% comments.forEach(comment => { %>
                 <% if(comment.id != targetComment.id) {%>
                
                 <li class="comment_card">
@@ -38,11 +42,15 @@
                     </div>
 
                     <div class="user_comment">
-                        
-                        <p class="comment_author"><%= comment.author %></p>
+                        <p class="comment_author"><%= comment.author.name %></p>
                         <p class="feedback"><%= comment.content %></p>
+
+                    <% if(comment.author.id == currentUser) { %>
                         <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/edit" class="comment_edit">Edit</a>
-                        <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/delete" class="comment_delete">Delete</a>
+                        <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/delete"
+                        class="comment_delete">Delete</a>
+                    <% } %>
+                        
                     </div>
                 </li>
                 
@@ -54,16 +62,7 @@
             <textarea name="content"rows="6" placeholder="Write a response..." class="comment" maxlength="480">
                 <%= targetComment.content %>
             </textarea>
-
-            <div class="form_flex">
-                
-                <input type="text" name="author" placeholder="Author" value="<%= targetComment.author %>" class="reader">
-                <input type="submit" value="Comment" class="comment_submit">
-
-            </div>
-
-           
-
+            <input type="submit" value="Comment" class="comment_submit">
         </form>
 
     </div>
