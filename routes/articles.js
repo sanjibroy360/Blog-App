@@ -1,57 +1,39 @@
 const express = require("express");
 const router = express.Router();
 
-const Comment = require('../models/comment');
-const commentRouter = require('./comments.js');
+const User = require('../models/user');
 const Article = require('../models/article');
+const Comment = require('../models/comment');
+
+const commentRouter = require('./comments.js');
+
+const auth = require('../middleware/auth');
+
+
 
 // Show all articles
 
-
-
 router.get('/', (req, res, next) => {
-    
     Article.find({}, (err, articles) => {
         if(err) return next(err); 
-        let currentUser = req.session.userId;
-        res.render("articleHome", {articles, currentUser});  
+        res.render("articleHome", {articles});  
     })
 
-    
 });
-
-// Create Articles
-
-router.get('/new', (req, res, next) => {
-    res.render("createArticle");
-    console.log("Author", req.session.userId);
-});
-
-router.post('/', (req, res, next) => {
-    req.body.tags = req.body.tags.split(',').map(tag => tag.trim());
-
-    
-    req.body.author = req.session.userId;
-    Article.create(req.body, (err, data) => {
-        if(err) return next(err);
-        res.render("success",{msg : "Article Created Successfully"})
-    })  
-
-    
-
-})
-
 
 // Read Article
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id/read', (req, res, next) => {
     
     
     let articleId = req.params.id;
+    console.log("ArticleId" , articleId);
     
-    // Article.findById(id, (err, article) => {
+    // Article.findById(articleId, (err, article) => {
     //     if(err) return next(err);
     //     article.createdAt = String(article.createdAt);
+
+    
 
     Article
     .findById(articleId)
@@ -64,23 +46,35 @@ router.get('/:id', (req, res, next) => {
         .populate("author", "name")
         .exec((err, comments) => {
 
-            console.log(comments);
-            currentUser = req.session.userId;
-            res.render("showContent", { article, comments, currentUser });
+            if(err) return next(err);
+            res.render("showContent", { article, comments});
 
         })
     })
-        // Display Comments
 
-    //     Article
-    //     .findById(articleId)
-    //     .populate("comments", "content author")
-    //     .exec((err, article) => {
+})
 
-    //         console.log(article);
-            
-    //     })
-    // })
+
+// Prevent
+
+router.use(auth.checkLogin);
+
+// Create Articles
+
+router.get('/new', (req, res, next) => {
+    res.render("createArticle");
+});
+
+router.post('/',(req, res, next) => {
+
+    req.body.tags = req.body.tags.split(',').map(tag => tag.trim());
+    
+    req.body.author = req.session.userId;
+    Article.create(req.body, (err, data) => {
+        if(err) return next(err);
+        res.render("success",{msg : "Article Created Successfully"})
+    }) 
+
 })
   
 // Update Article
@@ -95,7 +89,8 @@ router.get('/:id/edit', (req, res, next) => {
 
 router.post('/:id/edit', (req, res, next) => {
     
-    let id = req.params.id;value="<%= comment.name %>"
+    let id = req.params.id;
+    req.body.tags = req.body.tags.split(",").map(tag => tag.trim());
     Article.findByIdAndUpdate(id, req.body, (err, updatedArticle)=> {
         if(err) return next(err);
         res.render("success", {msg : "User Updated Successfully!"});
@@ -125,7 +120,7 @@ router.get('/:id/like', (req, res, next) => {
     Article.findByIdAndUpdate({_id: id},{$inc : {likes : 1}}, (err, article) => {
         if(err) return next(err);
         console.log(article);
-        res.redirect(`/articles/${id}`);
+        res.redirect(`/articles/${id}/read`);
     })
 })
 
@@ -144,7 +139,7 @@ router.get('/:id/unlike', (req, res, next) => {
                 console.log("updated"); 
             })
         }
-        res.redirect(`/articles/${id}`);
+        res.redirect(`/articles/${id}/read`);
     })
 
     
@@ -168,7 +163,7 @@ router.post('/:articleId/comments', (req, res, next) => {
         ,(err, article) => {
             if(err) return next(err);
             console.log("article updated", article);
-            res.redirect(`/articles/${id}`);
+            res.redirect(`/articles/${id}/read`);
         })
     })
 })

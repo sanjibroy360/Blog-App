@@ -9,7 +9,7 @@
         <div class="content_flex">
             <p class="author_name">Author: <%= article.author.name %></p>
 
-            <% if(article.author.id == currentUser)  { %>
+            <% if(currentUser && article.author.id == currentUser.id)  { %>
             <div>
                 <a href="/articles/<%= article._id %>/edit" class="edit">Edit</a>
                 <a href="/articles/<%= article._id %>/delete" class="delete">Delete</a>
@@ -20,7 +20,7 @@
 
         <p class="date"><%= article.createdAt %></p>
 
-        <p class="para"><%=article.description%></p>
+        <p class="para"><%=article.description %></p>
 
         <% article.tags.forEach(tag => { %>
         <span class="show_tag"> <%= tag %> </span>
@@ -48,10 +48,12 @@
                     <p class="comment_author"><%= comment.author.name %></p>
                     <p class="feedback"><%= comment.content %></p>
 
-                    <% if(comment.author.id == currentUser) { %>
+                    <% if(currentUser && comment.author.id == currentUser.id) { %>
+
                         <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/edit" class="comment_edit">Edit</a>
                         <a href="/articles/<%=article._id%>/comments/<%= comment._id %>/delete"
                         class="comment_delete">Delete</a>
+
                     <% } %>
 
                 </div>
@@ -61,16 +63,12 @@
 
         </ul>
 
-        <form action="/articles/<%= article._id%>/comments" method="POST" class="comment_form">
+        <form action="/articles/<%= article.id%>/comments" method="POST" class="comment_form">
 
             <textarea name="content" rows="6" placeholder="Write a response..."  class="comment"
                 maxlength="480"></textarea>
 
-            
-
                 <input type="submit" value="Comment" class="comment_submit">
-
-        
 
         </form>
 

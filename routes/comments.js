@@ -108,7 +108,7 @@ router.get('/:articleId/comments/:commentId/delete', (req, res, next) => {
 
         Article.findOneAndUpdate({ _id: articleId }, { $pull: { comments: commentId } }, (err, updatedArticle) => {
             if (err) return next(err);
-            res.redirect(`/articles/${articleId}`);
+            res.redirect(`/articles/${articleId}/read`);
         });
 
     })

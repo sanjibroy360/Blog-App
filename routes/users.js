@@ -12,7 +12,6 @@ router.get('/register', (req, res, next) => {
 router.post('/register', (req, res, next) => {
   User.create(req.body, (err, createdUser) => {
     if(err) return next(err);
-    console.log(res.body);
     res.redirect("/users/login");
   })
 })
@@ -46,8 +45,7 @@ router.post("/login", (req, res, next) => {
       
     });
     req.session.userId = user.id;
-    console.log(req.headers);
-    console.log(req.session);
+   
   })
  
 })

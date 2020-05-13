@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var auth = require("./middleware/auth")
+
 
 var session = require('express-session');
 var Mongostore = require('connect-mongo')(session);
@@ -42,23 +44,27 @@ app.use(session({
   })
 );
 
-app.use('/articles',(req, res, next) => {
 
-  if(req.session && req.session.userId) {
+
+// app.use('/articles',(req, res, next) => {
+
+//   if(req.session && req.session.userId) {
     
-    let userId = req.session.userId;
-    next();
+//     let userId = req.session.userId;
+//     next();
 
-  } else {
+//   } else {
       
-      console.log(req.headers);
-      req.session.destroy();
-      res.clearCookie('connect.sid');
-      res.redirect("/users/login");
+//       console.log(req.headers);
+//       req.session.destroy();
+//       res.clearCookie('connect.sid');
+//       res.redirect("/users/login");
       
-  }
+//   }
   
-})
+// })
+
+// app.use('/articles', auth.userAccess);
 
 
 // app.use((req, res, next) => {
@@ -78,6 +84,8 @@ app.use('/articles',(req, res, next) => {
 
 //   next();
 // })
+
+app.use(auth.getUserInfo);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/articles',articleRouter);
