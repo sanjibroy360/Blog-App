@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var passport = require('passport');
+
+
+require("dotenv").config();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,5 +16,16 @@ router.get('/', function(req, res, next) {
   }
   
 });
+
+router.get('failed', (req, res) => {
+  res.send("Failed!");
+})
+
+router.get("/auth/github", passport.authenticate("github"));
+router.get("/auth/github/callback", passport.authenticate("github", { failureRedirect: '/failed'}),
+  (req, res) => {
+    res.redirect('/users');
+  }
+);
 
 module.exports = router;

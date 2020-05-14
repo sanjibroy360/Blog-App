@@ -8,6 +8,10 @@ const userSchema = new Schema( {
         required: true
     },
 
+    avatar : {
+        type: String
+    },
+
     email: {
         type: String,
         required: true,
@@ -16,7 +20,7 @@ const userSchema = new Schema( {
 
     password : {
         type: String,
-        // minlength: 8
+        minlength: 8
     }
 
     
@@ -25,7 +29,6 @@ const userSchema = new Schema( {
 userSchema.pre("save", function(next) {
     this.password = bcrypt.hash(this.password, 10, (err, hashedPassword) => {
         if(err) return next(err);
-        console.log("password: ",this.password)
         this.password = hashedPassword;
        
         next();

@@ -4,8 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-var auth = require("./middleware/auth")
+require('dotenv').config();
 
+require('./module/passport');
+
+var auth = require("./middleware/auth");
 
 var session = require('express-session');
 var Mongostore = require('connect-mongo')(session);
@@ -44,7 +47,9 @@ app.use(session({
   })
 );
 
-
+// Passport  initialize
+// app.use(passport.initialize());
+// app.use(passport.session())
 
 // app.use('/articles',(req, res, next) => {
 

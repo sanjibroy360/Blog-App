@@ -1,20 +1,48 @@
 var express = require('express');
+var path = require('path');
 const Article = require('../models/article');
 var router = express.Router();
-
+var multer = require('multer');
 const User = require('../models/user');
+
+// var upload = multer({dest: '../public/images/'});
+
+var storage = multer.diskStorage({
+  
+  destination: function(req, file, cb) {
+    cb(null,path.normalize(path.join(__dirname,"../public/images/uploads")));
+  },
+
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+var upload = multer({storage: storage});
+
+// -----------------------
+
+
+
+
+
 
 /* GET users listing. */
 router.get('/register', (req, res, next) => {
   res.render("register");
 });
 
-router.post('/register', (req, res, next) => {
+router.post('/register', upload.single('avatar'), (req, res, next) => {
+  
+  console.log("File: ",req.file);
+  console.log("Body: ", req.body);
+  req.body.avatar = req.file.filename; 
   User.create(req.body, (err, createdUser) => {
     if(err) return next(err);
     res.redirect("/users/login");
   })
 })
+
 
 
 // Login
