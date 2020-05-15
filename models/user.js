@@ -8,19 +8,25 @@ const userSchema = new Schema( {
         required: true
     },
 
+    username : {
+        type: String,
+        required: true,
+        unique: true
+    },
+
     avatar : {
         type: String
     },
 
     email: {
         type: String,
-        required: true,
+        // required: true,
         unique: true   
     },
 
     password : {
         type: String,
-        minlength: 8
+        // minlength: 8
     }
 
     

@@ -9,6 +9,8 @@ require("dotenv").config();
 router.get('/', function(req, res, next) {
   // console.log(req.session)
 
+  // res.render('index', { title: 'Express' });
+
   if(req.session && req.session.userId) {
     res.send("Session available")
   } else {
@@ -17,14 +19,15 @@ router.get('/', function(req, res, next) {
   
 });
 
-router.get('failed', (req, res) => {
-  res.send("Failed!");
+router.get('/failed', (req, res) => {
+  res.send("Failed: ", req.session);
 })
 
 router.get("/auth/github", passport.authenticate("github"));
 router.get("/auth/github/callback", passport.authenticate("github", { failureRedirect: '/failed'}),
   (req, res) => {
-    res.redirect('/users');
+    console.log("Success: ",req.session);
+    res.redirect('/articles');
   }
 );
 

@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var passport = require('passport')
 require('dotenv').config();
 
 require('./module/passport');
@@ -48,8 +49,8 @@ app.use(session({
 );
 
 // Passport  initialize
-// app.use(passport.initialize());
-// app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session())
 
 // app.use('/articles',(req, res, next) => {
 

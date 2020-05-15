@@ -1,8 +1,9 @@
 const User = require('../models/user');
+const passport = require('passport');
 
 let checkLogin = (req, res, next) => {
 
-    if(req.session && req.session.userId) {
+    if((req.session && req.session.userId) || (req.session.passport)) {
         console.log("Login: True")
         next();
     } else {
@@ -14,9 +15,9 @@ let checkLogin = (req, res, next) => {
 
 let getUserInfo = (req, res, next) => {
 
-    if(req.session.userId && req.session) {
+    if((req.session.userId && req.session) || (req.session.passport)) {
         
-        let id = req.session.userId;
+        let id = req.session.userId || req.session.passport.user;
 
         User.findById(id, (err, userInfo) => {
 
@@ -25,13 +26,9 @@ let getUserInfo = (req, res, next) => {
             req.currentUser = userInfo;
             res.locals.currentUser = userInfo;
             
-            // console.log("session present");
-            // console.log("locals: ",res.locals.userInfo);
             next();
 
         })
-       
-        
     }
 
     else {

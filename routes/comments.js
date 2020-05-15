@@ -48,8 +48,8 @@ router.get('/:articleId/comments/:commentId/edit', (req, res, next) => {
                 if (err) return next(err);
                 
 
-                let currentUser = req.session.userId;
-                res.render("editComment", { article, comments, targetComment, currentUser });
+                // let currentUser = req.session.userId;
+                res.render("editComment", { article, comments, targetComment });
             
             })
             
@@ -65,6 +65,7 @@ router.post("/:articleId/comments/:commentId/edit", (req, res, next) => {
     let commentId = req.params.commentId;
     let articleId = req.params.articleId;
     let targetComment = commentId;
+
     Article
     .findById(articleId)
     .populate("author", "name") 
@@ -78,14 +79,12 @@ router.post("/:articleId/comments/:commentId/edit", (req, res, next) => {
 
             if(err) return next(err);
 
-            Comment.findByIdAndUpdate(commentId, req.body, (err, updatedComment) => {
+            Comment.findByIdAndUpdate(commentId, req.body, {new: true} ,(err, targetComment) => {
 
                 if (err) return next(err);
-                
+                console.log("targetComment: ",targetComment);
+                res.redirect(`/articles/${articleId}/read`)
 
-                let currentUser = req.session.userId;
-                res.render("showContent", { article, comments, targetComment, currentUser });
-            
             })
             
         })

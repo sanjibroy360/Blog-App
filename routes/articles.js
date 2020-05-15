@@ -69,7 +69,7 @@ router.post('/',(req, res, next) => {
 
     req.body.tags = req.body.tags.split(',').map(tag => tag.trim());
     
-    req.body.author = req.session.userId;
+    req.body.author = req.session.userId || req.session.passport.user;
     Article.create(req.body, (err, data) => {
         if(err) return next(err);
         res.render("success",{msg : "Article Created Successfully"})
@@ -153,7 +153,7 @@ router.post('/:articleId/comments', (req, res, next) => {
     let articleId = id;
     req.body.articleId = id;
     req.body.content = req.body.content.trim();
-    req.body.author = req.session.userId;
+    req.body.author = req.session.userId || req.session.passport.user;
     
     Comment.create(req.body, (err, comment) => {
         if(err) return next(err);
