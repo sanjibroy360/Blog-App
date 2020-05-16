@@ -31,4 +31,32 @@ router.get("/auth/github/callback", passport.authenticate("github", { failureRed
   }
 );
 
+
+// Google
+
+router.get('/auth/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }));
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/failed' }),
+  function(req, res) {
+    res.redirect('/articles');
+  }
+);
+
+// Twitter
+
+router.get('/auth/twitter',
+  passport.authenticate('twitter'));
+
+router.get('/auth/twitter/callback', 
+  passport.authenticate('twitter', { failureRedirect: '/failed' }),
+
+  function(req, res) {
+   
+    res.redirect('/articles');
+  
+  }
+);
+
 module.exports = router;
