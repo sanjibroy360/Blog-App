@@ -70,10 +70,19 @@ router.post('/',(req, res, next) => {
     req.body.tags = req.body.tags.split(',').map(tag => tag.trim());
     
     req.body.author = req.session.userId || req.session.passport.user;
-    Article.create(req.body, (err, data) => {
+    Article.create(req.body, (err, article) => {
         if(err) return next(err);
-        res.render("success",{msg : "Article Created Successfully"})
-    }) 
+        
+     
+
+        User.findByIdAndUpdate(req.body.author,
+            {$push : {articles: article.id}} 
+            ,(err, user) => {
+                if(err) return next(err);
+                res.render("success",{msg : "Article Created Successfully"})
+        })
+
+    })
 
 })
   

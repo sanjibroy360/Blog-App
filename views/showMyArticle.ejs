@@ -1,36 +1,59 @@
-<%-include('partials/header')-%>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article</title>
+    
+        <link rel="stylesheet" href="/stylesheets/style.css">
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;1,700&family=Playfair+Display:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
+
+</head>
+<body class="myarticle_sec">
 
 
 <%-include('partials/navbar')-%>
 
-<div class="container">
+<main>
+    <div class="myarticle_container myarticle_flex">
 
-    <ul>
-        <% articles.forEach(article => { %>
+        <div class="myinfo">
+            <div class="avatar_wrapper">
+                <img src="<%= user.avatar %>" alt="profile_pic" class="avatar">
 
-        <a href="/articles/<%=article.id%>/read">
+                <p class="myname"> <%= user.name %> </p>
+                
+            </div>
+        </div>    
 
-            <li class="card"> 
-                <span class="article_title"> <%= article.title %> </span> 
+        <ul class="myarticle_list">
 
-                <p class="create_date">
-                    <%= article.createdAt %>
-                </p>
+            <h2 class="article_list_heading">My Blogs</h2>
+            <% user.articles.forEach(article => { %>
 
-                <p class="article_desc">
-                    <%= article.description.slice(0,750) %>
-                </p>
+            <a href=>
 
-                <p class="upvote">
-                    <i class="fas fa-arrow-alt-circle-up"></i> <%= article.likes%> 
-                </p>
-        
-            </li>
+                <li class="card"> 
+                    <span class="article_title"> <%= article.title %> </span> 
+
+                    <p class="myarticle_createdate create_date">
+                        <%= article.createdAt.toString().slice(0, 15) %> / by <a href="#" class="highlight"><%=user.name%> </a>
+                    </p>
+
+                    <p class="article_desc">
+                        <%= article.description.slice(0,750) %>
+                    </p>
+
+                    <a href="/articles/<%=article.id%>/read" class="highlight"> Read More </a>
+
             
-        </a>
-        <% }) %>
-    </ul>
-    
-</div>
-
+                </li>
+                
+            </a>
+            <% }) %>
+        </ul>
+        
+    </div>
+</main>
 <%-include('partials/footer')-%>

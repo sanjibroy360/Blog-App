@@ -27,8 +27,19 @@ const userSchema = new Schema( {
     password : {
         type: String,
         // minlength: 8
-    }
+    },
 
+    articles: [{
+        type: Schema.Types.ObjectId,
+        ref: "Article"
+    }],
+
+    
+
+    twitterUsername : String,
+
+    githubUsername : String
+    
     
 },{timestamps : true} );
 

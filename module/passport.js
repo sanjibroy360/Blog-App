@@ -21,17 +21,19 @@ passport.use(
             User.findOne({username : profile._json.login}, (err, user) => {
                 if(err) return console.log("First step error: ", err);
 
+                
+
                 obj = {
                     username: profile._json.login,
                     name: profile._json.name,
                     email: profile._json.email || null,
+                    avatar: profile._json.avatar_url || '', 
                     password: "password"
                 };      
 
                 if(!user) {
                     User.create(obj, (err, userCreated) => {
                         if(err) return console.log(err);
-                        
                         console.log("User:",userCreated);
                         done(null, userCreated);
                     })
@@ -66,15 +68,14 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            
             callbackURL: "http://localhost:3000/auth/google/callback",
         },
 
         (accessToken, refreshToken, profile, done) => {
             // check whether existing or not
 
-            console.log("Profile: ", profile);
-
+            
+           
             User.findOne({email: profile.emails[0].value}, (err, user) => {
                 if(err) return console.log("First step error: ", err);
 
@@ -82,7 +83,8 @@ passport.use(
                     username: profile.displayName,
                     name: profile.displayName,
                     email: profile.emails[0].value || null,
-                    password: "password"
+                    avatar: profile._json.picture || '',
+                    password: "password",
                 };      
 
                 if(!user) {
@@ -130,7 +132,6 @@ passport.use(
         (token, tokenSecret, profile, done) => {
             // check whether existing or not
 
-            console.log("Profile: ", profile);
 
             User.findOne({username: profile._json.screen_name}, (err, user) => {
                 if(err) return console.log("First step error: ", err);
@@ -139,6 +140,7 @@ passport.use(
                     username: profile._json.screen_name,
                     name: profile._json.name,
                     email: null,
+                    avatar: profile._json.profile_image_url_https || '',
                     password: "password"
                 };      
 

@@ -85,11 +85,23 @@ router.post("/login", (req, res, next) => {
 router.get('/:id/myarticles', (req, res, next) => {
 
   let id = req.params.id;
-  Article.find({author: id}, (err, articles) => {
-    if(err) return next(err); 
-    let currentUser = req.session.userId;
-    res.render("showMyArticle", {articles, currentUser});  
-  })
+  let author;
+
+  User.findById(id)
+    .populate("articles")
+    .exec((err, user) => {
+
+      if(err) return next(err);
+
+      console.log(user);
+      res.render("showMyArticle", {user});  
+    })
+  
+  // Article.find({author: id}, (err, articles) => {
+  //   if(err) return next(err); 
+    
+    
+  // })
 
 })
 

@@ -14,19 +14,35 @@
         <a href="/articles/<%=article.id%>/read">
 
             <li class="card"> 
-                <span class="article_title"> <%= article.title %> </span> 
+               <div class="articleHome_card_flex">
+                    
+                    <div class="card_article_info">
+                        <p class="create_date">
+                            <%= article.createdAt.toString().slice(0,15) %>
+                        </p>
 
-                <p class="create_date">
-                    <%= article.createdAt %>
-                </p>
+                        <span class="article_title"> <%= article.title %> </span> 
 
-                <p class="article_desc">
-                    <%= article.description.slice(0,750) %>
-                </p>
+                        <span class="article_title"> <%= article.author.name %> </span> 
 
-                <p class="upvote">
-                    <i class="fas fa-arrow-alt-circle-up"></i> <%= article.likes%> 
-                </p>
+                    </div>
+
+                    <div class="card_article_desc">
+                        <span class="article_desc">
+                            <%= article.description.slice(0,750) %>
+                        </span>
+                        <a href="/articles/<%=article.id%>/read">
+                            <div class="articleHome_btn_wrapper">
+                                
+                                <button class="articleHome_btn">
+                                    Read More 
+                                </span>
+                                </button>
+                            </div>    
+                        </a>
+                    </div>
+
+               </div>
         
              </li>
         </a>
