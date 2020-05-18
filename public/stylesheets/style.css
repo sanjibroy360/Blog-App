@@ -86,7 +86,9 @@ a {
 /* Nav Bar */
 
 .header {
-  background-color: rgb(36,41,46);
+  /* background-color: rgb(36,41,46); */
+  background-color: ;
+  background: linear-gradient(to bottom right, #fafafa , rgb(255, 251, 251) , rgba(248,247,247,0.8), #fff);
   margin-bottom: 30px;
 }
 
@@ -98,7 +100,8 @@ a {
 
 .logo {
   font-size: 30px;
-  color: #fff;
+  color: rgb(54, 0, 0);
+  font-weight: bold;
 }
 
 .header_container {
@@ -122,12 +125,17 @@ a {
 }
 
 .navlinks li a {
-  color: #fff;
+  color: rgb(54, 0, 0);
 }
 
 .navlinks li a:hover {
-  color: rgb(57,169,124);
+  color: rgb(153, 6, 6);
 }
+
+.navlinks li a:active {
+  color: yellow;
+}
+
 
 /* Form */
 
@@ -308,12 +316,12 @@ input, .btn, textarea {
 }
 
 .card_article_info {
-  flex-basis: 15%;
+  flex-basis: 25%;
   text-align: left;
 }
 
 .card_article_desc {
-  flex-basis: 80%;
+  flex-basis: 72%;
   border-top: 3px solid orange;
   /* border-radius: 50%;
    */
@@ -342,9 +350,9 @@ input, .btn, textarea {
 .articleHome_btn {
   outline: 0;
   font-size: 15px;
-  width: 30%;
-  margin-top: 10px;
-  margin-right: 30px;
+  width: 22%;
+  margin-top: 20px;
+  margin-right: 50px;
   text-transform: uppercase;
   background: rgb(242,242,242);
   border: none;
@@ -353,8 +361,8 @@ input, .btn, textarea {
   position: absolute;
   z-index: 1;
   border-radius: 25px;
-  box-shadow: -1px 0px 0 3px rgb(245, 245, 245),
-  1px 0px 3px rgb(8,8,8);
+  box-shadow: -3px 0px 0 3px rgb(245, 245, 245),
+  1px 0px 3px rgba(49, 49, 49,0.5);
   
 }
 
@@ -368,7 +376,7 @@ input, .btn, textarea {
   background: #fff;
   /* background: #3498db; */
   /* background: rgb(242,242,242); */
-  transition: 1s ease-in-out;
+  transition: 0.7s ease-in-out;
   transform: rotate(-135deg);
   z-index: -1;
 
@@ -379,6 +387,37 @@ input, .btn, textarea {
   z-index: -1;
 }
 
+.publish_btn {
+  width: 10%;
+
+  margin: 100px 0px;
+}
+
+.outer_container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.article_home_heading {
+  font-size: 42px;
+  font-weight: bold;
+  color: rgb(49, 49, 49);
+  
+}
+
+.home_quote {
+  margin-top: 20px;
+  margin-left: 15px;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.home_list_create_date {
+  text-align: right;
+  margin-right: 15px;
+}
 
 /* Message */
 
@@ -655,8 +694,12 @@ input, .btn, textarea {
 }
 
 .highlight {
-  color: rgb(57,169,124);
+  color: rgb(68, 10, 10);
   font-weight: 550;
+}
+
+.highlight:hover {
+  color: brown;
 }
 
 .article_list_heading {

@@ -3,21 +3,23 @@
 
 <%-include('partials/navbar')-%>
 
+<div class="outer_container ">
+    <h2 class="article_home_heading">Blogs.</h2>
+    <i class="home_quote">Be you the world will adjust.</i>
+</div>
 <div class="container">
     
-    <% if(currentUser) { %>
-        <a href="/users/<%= currentUser.id %>/myarticles"> <button class="btn"> My Articles</button> </a>
-    <% } %>
+    
     
     <ul>
         <% articles.forEach(article => { %>
-        <a href="/articles/<%=article.id%>/read">
+
 
             <li class="card"> 
                <div class="articleHome_card_flex">
                     
                     <div class="card_article_info">
-                        <p class="create_date">
+                        <p class="create_date home_list_create_date">
                             <%= article.createdAt.toString().slice(0,15) %>
                         </p>
 
@@ -29,13 +31,13 @@
 
                     <div class="card_article_desc">
                         <span class="article_desc">
-                            <%= article.description.slice(0,750) %>
+                            <%= article.description.slice(0, Math.floor(article.description.length * 0.50)) + ' . . .' %>
                         </span>
                         <a href="/articles/<%=article.id%>/read">
                             <div class="articleHome_btn_wrapper">
                                 
                                 <button class="articleHome_btn">
-                                    Read More 
+                                    Read More
                                 </span>
                                 </button>
                             </div>    
@@ -45,9 +47,11 @@
                </div>
         
              </li>
-        </a>
+        
         <% }) %>
     </ul>
+
+    <a href="/articles/new"> <button class="articleHome_btn publish_btn"> Publish</button> </a>
     
 </div>
 

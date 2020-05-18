@@ -8,11 +8,11 @@ const userSchema = new Schema( {
         required: true
     },
 
-    username : {
-        type: String,
-        required: true,
-        unique: true
-    },
+    // username : {
+    //     type: String,
+    //     required: true,
+    //     unique: true
+    // },
 
     avatar : {
         type: String
@@ -20,7 +20,7 @@ const userSchema = new Schema( {
 
     email: {
         type: String,
-        // required: true,
+        required: true,
         unique: true   
     },
 
@@ -31,15 +31,20 @@ const userSchema = new Schema( {
 
     articles: [{
         type: Schema.Types.ObjectId,
-        ref: "Article"
+        ref: "Article",
     }],
 
-    
+    google : {
+        providerId: String,
+        avatar: String
+    },
 
-    twitterUsername : String,
+    github : {
+        providerId: String,
+        avatar: String
+    },
 
-    githubUsername : String
-    
+    currentProvider : String,
     
 },{timestamps : true} );
 

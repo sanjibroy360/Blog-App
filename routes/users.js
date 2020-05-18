@@ -56,7 +56,11 @@ router.post("/login", (req, res, next) => {
 
   const { email , password } = req.body;
 
+  console.log(req.body);
+
   User.findOne({email}, (err, user) => {
+
+    user.currentProvider = '';
 
     if(err) return next(err);
     else if(!user) return res.render("success", {msg : "Wrong email"});
@@ -93,7 +97,7 @@ router.get('/:id/myarticles', (req, res, next) => {
 
       if(err) return next(err);
 
-      console.log(user);
+      console.log("My Info: ",user[user.currentProvider].avatar);
       res.render("showMyArticle", {user});  
     })
   

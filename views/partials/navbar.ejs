@@ -7,11 +7,13 @@
         <ul class="navlinks">
             <li> <a href="/articles">Home</a></li>
             <li>
-                <a href="/articles/new"> <button class="btn"> Publish</button> </a>
+                <% if(currentUser) { %>
+                    <a href="/users/<%= currentUser.id %>/myarticles"> Profile</a>
+                <% } %>
             </li>
 
             <li>
-                <a href="/users/logout"> <button class="btn"> Log Out</button> </a>
+                <a href="/users/logout"> Log Out</a>
             </li>
 
             
